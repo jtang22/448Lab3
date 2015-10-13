@@ -117,7 +117,7 @@ public class GeneContentModel {
                     }
                     
                     // Get the number of nucleotides from the start and end range
-                    int numberNucleosInGene = Math.abs(startGene - endGene);
+                    int numberNucleosInGene = Math.abs(startGene - endGene) + 1;
                     if (endGene > lastNucleoNumber && startGene > lastNucleoNumber) {
                     	lastNucleoNumber = endGene;
                     	// Count the nucleotides, because we don't have to ignore it
