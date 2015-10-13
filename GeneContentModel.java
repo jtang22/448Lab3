@@ -12,23 +12,32 @@ public class GeneContentModel {
 	private double geneNucleoFraction = 0;
 	private double relativeGeneCoverage = 0;
 
-	public static void main(String[] args) {
-		Scanner gtfScanner, lineScanner  = null;
-        GeneContentModel geneModel = new GeneContentModel();
-		File gtfFile;
-		File fastaFile;
+    private Writer csvFileWriter, txtFileWriter;
+    private BufferedWriter csvBufferedWriter, txtBufferedWriter;
 
-		if (args.length < 2) {
-			System.out.println("usage: java gtfFile fastaFile");
-			return;
-		}
+    private File gtfFile, fastaFile;
+    private String seqName;
+
+    public GeneContentModel() {
+        reset();
+    }
+
+	public int caclulateGeneContent(File gtfFile, File fastaFile) {
+		Scanner gtfScanner, lineScanner  = null;
 		
         try {
-            gtfFile = new File(args[0]);
-            fastaFile = new File(args[1]);
+            //output files
+            String outputFile = gtfFile.getName().replace (".txt", ("_genes.csv"));
+            csvFileWriter = new FileWriter(outputFile);
+            csvBufferedWriter = new BufferedWriter(csvFileWriter);
+
+            outputFile = gtfFile.getName().replace(".txt", ("_calc.txt"));
+            txtFileWriter = new FileWriter(outputFile);
+            txtBufferedWriter = new BufferedWriter(txtFileWriter);
+
             gtfScanner = new Scanner(gtfFile);
 
-            fastaLen = geneModel.calcNucleotides(fastaFile);
+            fastaLen = calcNucleotides(fastaFile);
 
             String gtfLine = "";
             boolean foundExon = false;
@@ -41,7 +50,7 @@ public class GeneContentModel {
             	
                 lineScanner = new Scanner(gtfScanner.nextLine());
                 // Skip seq name
-                lineScanner.next();
+                seqName = lineScanner.next();
                 // Skip source
                 lineScanner.next();
                 // Save feature
@@ -112,8 +121,10 @@ public class GeneContentModel {
                     	lastNucleoNumber = endGene;
                     	// Count the nucleotides, because we don't have to ignore it
                     	totalNumberOfNucleos += numberNucleosInGene;
-                		System.out.println("Start: " + startGene);
-                		System.out.println("End: " + endGene);
+                        csvBufferedWriter.write(geneCount + ", " + startGene + ", " + endGene);
+                        csvBufferedWriter.newLine();
+                		// System.out.println("Start: " + startGene);
+                		// System.out.println("End: " + endGene);
                         System.out.println("# of Nucleotides in gene: " + Math.abs(numberNucleosInGene));
                     	System.out.println("Total # of Nucleotides from all genes: " + totalNumberOfNucleos);
                     }
@@ -121,26 +132,66 @@ public class GeneContentModel {
                     	System.out.println("-----------Ignoring overlapping gene-----------");
                 }
             }
-            
-            System.out.println("\n\n------------SUMMARY-------------");
-            System.out.println("# of nucleotides in all genes: " + totalNumberOfNucleos);
-            System.out.println("# of nucleotides in FASTA: " + fastaLen);
-            System.out.println("# of valid genes in GTF: " + geneCount);
+
+            txtBufferedWriter.write("Sequence Name: " + seqName);
+            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Number of Genes: " + geneCount);
+            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Total Length of Sequence: " + fastaLen);
+            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Total Length of Nucleotides in Genes: " + totalNumberOfNucleos);
+            txtBufferedWriter.newLine();
+            // System.out.println("\n\n------------SUMMARY-------------");
+            // System.out.println("# of nucleotides in all genes: " + totalNumberOfNucleos);
+            // System.out.println("# of nucleotides in FASTA: " + fastaLen);
+            // System.out.println("# of valid genes in GTF: " + geneCount);
             
             // Calculate average gene size and print
-            geneModel.getAverageGeneSize(totalNumberOfNucleos, geneCount);
+            double avgFraction = getAverageGeneSize(totalNumberOfNucleos, geneCount);
+            txtBufferedWriter.write("\nAverage gene size: " + avgFraction);
+            txtBufferedWriter.newLine();
             
             // Calculate gene nucleotide fraction and print
-            geneModel.getGeneNucleotideFraction(totalNumberOfNucleos, fastaLen);
+            double geneNucFraction = getGeneNucleotideFraction(totalNumberOfNucleos, fastaLen);
+            DecimalFormat formatter = new DecimalFormat("0.000");
+            txtBufferedWriter.write("\nGene nucleotide fraction: " + formatter.format(geneNucFraction) + "%");
+            txtBufferedWriter.newLine();
             
             // Calculate relative gene coverage and print
-            geneModel.getRelativeGeneCoverage(totalNumberOfNucleos, geneCount, fastaLen);
+            double relativeGene = getRelativeGeneCoverage(totalNumberOfNucleos, geneCount, fastaLen);
 
+            txtBufferedWriter.write("\nRelative gene coverage: " + formatter.format(relativeGene) + "%");
+            txtBufferedWriter.newLine();
+
+            csvBufferedWriter.close();
+            txtBufferedWriter.close();
+            csvFileWriter.close();
+            txtFileWriter.close();
+            return 0;
 		}
         catch(FileNotFoundException e) {
-            System.out.println("Invalid GTF File");
+            return 1;
+        }
+        catch(IOException e) {
+            return 1;
         }
 	}
+
+    public void reset() {
+        fastaLen = 0;
+        nGenes = 0;
+        totalGeneLen = 0;
+        avgGeneSize = 0;
+        geneNucleoFraction = 0;
+        relativeGeneCoverage = 0;
+        csvFileWriter = null;
+        txtFileWriter = null;
+        csvBufferedWriter = null;
+        txtBufferedWriter = null;
+        gtfFile = null;
+        fastaFile = null;
+        seqName = "";
+    }
 
     //Counts number of nucleotides in Fasfa file
     private int calcNucleotides(File fasta) {
@@ -181,8 +232,7 @@ public class GeneContentModel {
 
 		DecimalFormat formatter = new DecimalFormat("0.000");
 		System.out.println("Gene nucleotide fraction: " + formatter.format(fraction) + "%");
-		
-		return this.geneNucleoFraction;
+		return fraction;
     }
     
     // Calculates the gene nucleotide fraction 
@@ -192,6 +242,6 @@ public class GeneContentModel {
 		
 		DecimalFormat formatter = new DecimalFormat("0.000");
         System.out.println("Relative gene coverage: " + formatter.format(fraction) + "%");
-		return this.relativeGeneCoverage;
+		return fraction;
     }
 }
