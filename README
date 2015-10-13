@@ -1,0 +1,37 @@
+TEAM NUMBER: 10
+
+CSC 448 TEAM MEMBERS:
+Tammy Kong (takong@calpoly.edu)
+Jordan Tang (jtang22@calpoly.edu)
+Eric Tran (etran04@calpoly.edu)
+
+BIO 441 TEAM MEMBERS:
+Matthew Faris (mtfaris@calpoly.edu)
+Sarina Fernandez (sferna03@calpoly.edu)
+Sean Lang-Brown (seanlangbrown@gmail.com)
+
+PROGRAM INSTRUCTIONS ON CentOS:
+
+1. Download “GeneContentCalc.jar”
+2. Drag the “GeneContentCalc.jar” onto Desktop
+2. Open terminal
+3. type “cd Desktop” on command line without the quotes
+4. type “java - jar GeneContentCalc.jar” on command line without the quotes
+5. Window should pop up.
+6. Click "Open GTF File" to select desired GTF file.
+7. Click "Open FASTA File" to select desired FASTA file. 
+8. Click "Run"
+9. The output file should be inside the same folder as the "GCContentCalc.jar"
+
+
+PROGRAM INSTRUCTIONS ON MAC/WINDOWS:
+
+1. Download "GeneContentCalc.jar"
+2. Move the "GeneContentCalc.jar" to desired folder
+3. Double click "GeneContentCalc.jar"
+   A window should pop up.
+4. Click "Open GTF File" to select desired GTF file. 
+5. Click "Open FASTA File" to select desired FASTA file.
+6. Click "Run"
+7. The output file should be inside the same folder as the "GCContentCalc.jar"
+

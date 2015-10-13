@@ -134,14 +134,10 @@ public class GeneContentModel {
                 }
             }
             
-            txtBufferedWriter.write("Sequence Name: " + seqName);
-            txtBufferedWriter.newLine();
-            txtBufferedWriter.write("Number of Genes: " + geneCount);
-            txtBufferedWriter.newLine();
-            txtBufferedWriter.write("Total Length of Sequence: " + fastaLen);
-            txtBufferedWriter.newLine();
-            txtBufferedWriter.write("Total Length of Nucleotides in Genes: " + totalNumberOfNucleos);
-            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Sequence Name: " + seqName + "\n");
+            txtBufferedWriter.write("Number of Genes: " + geneCount + "\n");
+            txtBufferedWriter.write("Total Length of Sequence: " + fastaLen + "\n");
+            txtBufferedWriter.write("Total Length of Nucleotides in Genes: " + totalNumberOfNucleos + "\n");
             // System.out.println("\n\n------------SUMMARY-------------");
             // System.out.println("# of nucleotides in all genes: " + totalNumberOfNucleos);
             // System.out.println("# of nucleotides in FASTA: " + fastaLen);
@@ -149,20 +145,17 @@ public class GeneContentModel {
             
             // Calculate average gene size and print
             double avgFraction = getAverageGeneSize(totalNumberOfNucleos, geneCount);
-            txtBufferedWriter.write("\nAverage gene size: " + avgFraction);
-            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Average gene size: " + avgFraction + "\n");
             
             // Calculate gene nucleotide fraction and print
             double geneNucFraction = getGeneNucleotideFraction(totalNumberOfNucleos, fastaLen);
             DecimalFormat formatter = new DecimalFormat("0.000");
-            txtBufferedWriter.write("\nGene nucleotide fraction: " + formatter.format(geneNucFraction) + "%");
-            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Gene nucleotide fraction: " + formatter.format(geneNucFraction) + "%\n");
             
             // Calculate relative gene coverage and print
             double relativeGene = getRelativeGeneCoverage(totalNumberOfNucleos, geneCount, fastaLen);
 
-            txtBufferedWriter.write("\nRelative gene coverage: " + formatter.format(relativeGene) + "%");
-            txtBufferedWriter.newLine();
+            txtBufferedWriter.write("Relative gene coverage: " + formatter.format(relativeGene) + "%\n");
 
             csvBufferedWriter.close();
             txtBufferedWriter.close();
