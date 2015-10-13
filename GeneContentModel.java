@@ -79,7 +79,6 @@ public class GeneContentModel {
                     	if (checkFeature.equals("exon")) {
                     		foundExon = true; 
                     		startGene = Integer.parseInt(tempScanner.next());
-                    		System.out.println("Start: " + startGene);
                     	}
                     }
                     
@@ -99,21 +98,22 @@ public class GeneContentModel {
                     		// Skip start
                     		tempScanner.next();
                     		endGene = Integer.parseInt(tempScanner.next());
-                    		System.out.println("End: " + endGene);
                     	}
                     }
                     
                     // Get the number of nucleotides from the start and end range
                     int numberNucleosInGene = Math.abs(startGene - endGene);
-                    System.out.println("# Nucleos in Gene: " + Math.abs(numberNucleosInGene));
+                    //System.out.println("# Nucleos in Gene: " + Math.abs(numberNucleosInGene));
                     if (endGene > lastNucleoNumber && startGene > lastNucleoNumber) {
                     	lastNucleoNumber = endGene;
                     	// Count the nucleotides, because we don't have to ignore it
                     	totalNumberOfNucleos += numberNucleosInGene;
+                		System.out.println("Start: " + startGene);
+                		System.out.println("End: " + endGene);
                     	System.out.println("Total # of Nucleotides from all Genes: " + totalNumberOfNucleos);
                     }
                     else 
-                    	System.out.println("-----------Ignoring this gene-----------");
+                    	System.out.println("-----------Ignoring overlapping gene-----------");
                 }
             }
             
@@ -153,6 +153,7 @@ public class GeneContentModel {
                 counter += currentLine.length();
             }
             System.out.println("Total number of nucleotides: " + counter);
+            System.out.println("----------------------------------------");
             return counter;
         }
         catch(FileNotFoundException e) {
