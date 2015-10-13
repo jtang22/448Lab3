@@ -103,14 +103,14 @@ public class GeneContentModel {
                     
                     // Get the number of nucleotides from the start and end range
                     int numberNucleosInGene = Math.abs(startGene - endGene);
-                    //System.out.println("# Nucleos in Gene: " + Math.abs(numberNucleosInGene));
                     if (endGene > lastNucleoNumber && startGene > lastNucleoNumber) {
                     	lastNucleoNumber = endGene;
                     	// Count the nucleotides, because we don't have to ignore it
                     	totalNumberOfNucleos += numberNucleosInGene;
                 		System.out.println("Start: " + startGene);
                 		System.out.println("End: " + endGene);
-                    	System.out.println("Total # of Nucleotides from all Genes: " + totalNumberOfNucleos);
+                        System.out.println("# of Nucleotides in gene: " + Math.abs(numberNucleosInGene));
+                    	System.out.println("Total # of Nucleotides from all genes: " + totalNumberOfNucleos);
                     }
                     else 
                     	System.out.println("-----------Ignoring overlapping gene-----------");
