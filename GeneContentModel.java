@@ -170,14 +170,14 @@ public class GeneContentModel {
     // Calculates the gene nucleotide fraction 
     private double getGeneNucleotideFraction(int totalNumberOfNucleos, int fafsaLen) {
     	this.geneNucleoFraction = totalNumberOfNucleos / fafsaLen;
-        System.out.println("\n Gene nucleotide fraction: " + this.geneNucleoFraction);
+        System.out.println("Gene nucleotide fraction: " + this.geneNucleoFraction);
 		return this.geneNucleoFraction;
     }
     
     // Calculates the gene nucleotide fraction 
     private double getRelativeGeneCoverage(int totalNumberOfNucleos, int geneCount, int fastaLen) {
     	this.relativeGeneCoverage = totalNumberOfNucleos / (geneCount * fastaLen);
-        System.out.println("\n Gene nucleotide fraction: " + this.relativeGeneCoverage);
+        System.out.println("Gene nucleotide fraction: " + this.relativeGeneCoverage);
 		return this.relativeGeneCoverage;
     }
 }
