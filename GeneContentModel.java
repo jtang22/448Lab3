@@ -1,5 +1,6 @@
 import java.util.*;
 import java.io.*;
+import java.text.DecimalFormat;
 
 public class GeneContentModel {
 	private static int fastaLen = 0;
@@ -163,21 +164,28 @@ public class GeneContentModel {
     // Calculates the average gene size 
     private double getAverageGeneSize(int totalNumberOfNucleos, int geneCount) {
         this.avgGeneSize = totalNumberOfNucleos / geneCount;
-        System.out.println("\n Average gene size: " + this.avgGeneSize);
+        System.out.println("\nAverage gene size: " + this.avgGeneSize);
         return this.avgGeneSize;     
     }
     
     // Calculates the gene nucleotide fraction 
     private double getGeneNucleotideFraction(int totalNumberOfNucleos, int fafsaLen) {
-    	this.geneNucleoFraction = totalNumberOfNucleos / fafsaLen;
-        System.out.println("Gene nucleotide fraction: " + this.geneNucleoFraction);
+    	this.geneNucleoFraction = totalNumberOfNucleos / (double) fafsaLen;
+		double fraction = this.geneNucleoFraction * 100;
+
+		DecimalFormat formatter = new DecimalFormat("0.000");
+		System.out.println("Gene nucleotide fraction: " + formatter.format(fraction) + "%");
+		
 		return this.geneNucleoFraction;
     }
     
     // Calculates the gene nucleotide fraction 
     private double getRelativeGeneCoverage(int totalNumberOfNucleos, int geneCount, int fastaLen) {
-    	this.relativeGeneCoverage = totalNumberOfNucleos / (geneCount * fastaLen);
-        System.out.println("Gene nucleotide fraction: " + this.relativeGeneCoverage);
+    	this.relativeGeneCoverage = totalNumberOfNucleos / ((double)geneCount * (double)fastaLen);
+		double fraction = this.relativeGeneCoverage * 100;
+		
+		DecimalFormat formatter = new DecimalFormat("0.000");
+        System.out.println("Relative gene coverage: " + formatter.format(fraction) + "%");
 		return this.relativeGeneCoverage;
     }
 }
