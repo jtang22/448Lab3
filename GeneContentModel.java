@@ -18,9 +18,14 @@ public class GeneContentModel {
 		File gtfFile;
 		File fastaFile;
 
+		if (args.length < 2) {
+			System.out.println("usage: java gtfFile fastaFile");
+			return;
+		}
+		
         try {
-            gtfFile = new File("Dere3L1_gtf.txt");
-            fastaFile = new File("Dere3L1_FASTA.txt");
+            gtfFile = new File(args[0]);
+            fastaFile = new File(args[1]);
             gtfScanner = new Scanner(gtfFile);
 
             fastaLen = geneModel.calcNucleotides(fastaFile);
