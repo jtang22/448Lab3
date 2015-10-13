@@ -49,6 +49,7 @@ public class GeneContentModel {
             while(gtfScanner.hasNextLine()) {
             	
                 lineScanner = new Scanner(gtfScanner.nextLine());
+                
                 // Skip seq name
                 seqName = lineScanner.next();
                 // Skip source
@@ -82,37 +83,37 @@ public class GeneContentModel {
                     foundExon = false;
                     int startGene  = -1;
                     Scanner tempScanner = null;
-                    while (foundExon == false) {
+                    while (foundExon == false && gtfScanner.hasNextLine()) {
                     	tempScanner = new Scanner(gtfScanner.nextLine());
                     	// Skip start
-                    	tempScanner.next();
-                    	// Skip end
-                    	tempScanner.next();
-                    	// Check feature
-                    	String checkFeature = tempScanner.next();
-                    	if (checkFeature.equals("exon")) {
-                    		foundExon = true; 
-                    		startGene = Integer.parseInt(tempScanner.next());
-                    	}
+                   		tempScanner.next();
+                   		// Skip end
+                   		tempScanner.next();
+                   		// Check feature
+                   		String checkFeature = tempScanner.next();
+                   		if (checkFeature.equals("exon")) {
+                   			foundExon = true; 
+                   			startGene = Integer.parseInt(tempScanner.next());
+                   		}
                     }
                     
                     // Find the start/end codon depending on the strand being forward or reverse
                     boolean foundEnd = false;
                     int endGene = -1;
-                    while (foundEnd == false) {
+                    while (foundEnd == false && gtfScanner.hasNextLine()) {
                     	tempScanner = new Scanner(gtfScanner.nextLine());
                     	// Skip start
-                    	tempScanner.next();
-                    	// Skip end
-                    	tempScanner.next();
-                    	// Check feature
-                    	String checkFeature = tempScanner.next();
-                    	if (checkFeature.equals(lookingForCodon)) {
-                    		foundEnd = true; 
-                    		// Skip start
-                    		tempScanner.next();
-                    		endGene = Integer.parseInt(tempScanner.next());
-                    	}
+                   		tempScanner.next();
+                   		// Skip end
+                   		tempScanner.next();
+                   		// Check feature
+                   		String checkFeature = tempScanner.next();
+                   		if (checkFeature.equals(lookingForCodon)) {
+                   			foundEnd = true; 
+                   			// Skip start
+                   			tempScanner.next();
+                   			endGene = Integer.parseInt(tempScanner.next());
+                   		}
                     }
                     
                     // Get the number of nucleotides from the start and end range
@@ -123,8 +124,8 @@ public class GeneContentModel {
                     	totalNumberOfNucleos += numberNucleosInGene;
                         csvBufferedWriter.write(geneCount + ", " + startGene + ", " + endGene);
                         csvBufferedWriter.newLine();
-                		// System.out.println("Start: " + startGene);
-                		// System.out.println("End: " + endGene);
+                		//System.out.println("Start: " + startGene);
+                		//System.out.println("End: " + endGene);
                         System.out.println("# of Nucleotides in gene: " + Math.abs(numberNucleosInGene));
                     	System.out.println("Total # of Nucleotides from all genes: " + totalNumberOfNucleos);
                     }
@@ -132,7 +133,7 @@ public class GeneContentModel {
                     	System.out.println("-----------Ignoring overlapping gene-----------");
                 }
             }
-
+            
             txtBufferedWriter.write("Sequence Name: " + seqName);
             txtBufferedWriter.newLine();
             txtBufferedWriter.write("Number of Genes: " + geneCount);
@@ -167,6 +168,7 @@ public class GeneContentModel {
             txtBufferedWriter.close();
             csvFileWriter.close();
             txtFileWriter.close();
+            
             return 0;
 		}
         catch(FileNotFoundException e) {
